@@ -1,0 +1,24 @@
+/* English copy uses more horizontal space; keep the comic type and compact HUD. */
+html[lang=en] .weapon-slots button{font-size:9px;gap:3px}
+html[lang=en] .weapon-top{letter-spacing:.3px}
+html[lang=en] .menu-bottom{letter-spacing:.2px}
+html[lang=en] .comic-caption b{font-size:17px}
+html[lang=en] .dialog{max-height:92%;overflow:auto}
+html[lang=en] .guide-grid{column-gap:18px;row-gap:12px}
+html[lang=en] .guide-grid>div{min-width:0;line-height:1.35}
+html[lang=en] .guide-grid kbd{flex-shrink:0}
+html[lang=en] #wave-banner{font-size:clamp(18px,3.5vw,40px);max-width:92%;white-space:normal;text-align:center}
+html[data-edition=solo] #lan-button,html[data-edition=solo] .lan-only{display:none!important}
+@media(max-width:700px){
+  html[lang=en] .topbar{gap:10px}
+  html[lang=en] .nav-item{font-size:10px}
+  html[lang=en] .topbar nav{gap:8px}
+  html[lang=en] .weapon-slots button{font-size:8px;gap:2px}
+  html[lang=en] .mobile-buttons button{font-size:9px}
+  html[lang=en] .dialog h2{font-size:24px}
+}
+@media(max-width:420px){
+  html[lang=en] .nav-item{font-size:9px}
+  html[lang=en] .nav-item span{display:none}
+  html[lang=en] .guide-grid{grid-template-columns:1fr}
+}

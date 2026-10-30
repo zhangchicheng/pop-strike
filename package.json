@@ -1,0 +1,11 @@
+{
+  "name": "pop-strike",
+  "private": true,
+  "scripts": {
+    "dev": "node pop-strike/server.mjs",
+    "start": "node pop-strike/server.mjs",
+    "check": "npm --prefix pop-strike run check",
+    "test": "npm --prefix pop-strike test",
+    "build:release": "python3 scripts/build_release.py"
+  }
+}

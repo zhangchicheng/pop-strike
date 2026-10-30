@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#dad4c9">
+<title>Pop Strike — 漫画突击</title>
+<meta name="description" content="Pop Strike 漫画突击：走进漫画里的立体战场，挑战单人生存，或与朋友展开局域网红蓝对战。">
+<link rel="preload" href="./fonts/LilitaOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="./fonts/ZCOOLKuaiLe-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" type="image/svg+xml" href="./icon.svg"><link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="POP STRIKE 首页"><span class="brand-mark">✦</span><span>POP STRIKE<span class="brand-sub">COMIC COMBAT CLUB</span></span></a>
+  <nav><button class="nav-item active" id="arena-tab">训练场 <span>01</span></button><button class="nav-item" id="guide-button">作战指南 <span>↗</span></button></nav>
+  <div class="top-actions"><span class="live-label"><i></i> LOCAL SESSION</span><button id="sound-button" class="icon-button" title="切换声音" aria-label="切换声音" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></button><button id="fullscreen-button" class="icon-button" title="进入全屏（F）" aria-label="进入全屏" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button></div>
+</header>
+<main id="arena">
+  <canvas id="game-canvas" tabindex="0" aria-label="Pop Strike 漫画射击游戏"></canvas>
+  <div class="screen-grain"></div><div class="screen-vignette"></div><div id="damage-overlay"></div>
+  <div class="arena-label"><span class="small-square"></span><span>POP YARD<span class="subline">36° 04′ N / 115° 08′ W</span></span></div>
+  <div class="match-panel"><span id="wave-label">生存挑战</span><b id="match-time">03:00</b><div id="lan-match-scores" class="team-score"><span class="team-red">红队 <b id="red-score">0</b></span><i>—</i><span class="team-blue"><b id="blue-score">0</b> 蓝队</span></div><span class="match-detail" id="wave-detail">3 波敌人 · 1 个战场</span></div>
+  <div class="radar"><canvas id="minimap" width="180" height="180" aria-label="敌人位置雷达"></canvas><span>N</span><small id="radar-level">THE YARD</small></div>
+  <div id="killfeed" aria-live="polite"></div>
+  <div id="sniper-scope" class="hidden" aria-hidden="true"><div class="scope-lens"><i></i><b></b></div></div>
+  <div id="crosshair" class="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+  <div id="hitmarker">×</div><div id="comic-pop"></div><div id="wave-banner"></div>
+  <div id="traversal-hint" class="hidden" aria-live="polite"></div>
+  <div id="floating-scores"></div>
+  <section id="menu" class="menu-panel">
+    <div class="issue-label"><span>ISSUE NO. 001</span><span>★ EST. 2026</span></div>
+    <div class="sticker">全彩上膛，火力全开！</div>
+    <h1>POP<br><em>STRIKE</em><span class="title-star">✦</span></h1>
+    <p>走进漫画里的战场。<br>借助箱子和楼梯抢占高处，让每一发都留下印记。</p>
+    <button class="play-button" id="play-button"><span class="play-triangle">▶</span><span>开始战斗<small>LET'S MAKE SOME NOISE</small></span><b>↗</b></button>
+    <button class="secondary-button lan-entry" id="lan-button">局域网对战 <span>2 — 8 人 ↗</span></button>
+    <div class="menu-bottom"><span><i></i> 单人生存 / 局域网对战</span><span>COMIC / FPS</span></div>
+  </section>
+  <div class="comic-caption" id="comic-caption"><b>色彩很甜，火力很猛。</b><span>WELCOME TO THE POP YARD.</span></div>
+  <div class="health-hud"><div class="health-symbol">✚</div><div class="health-content"><span>生命值 <small>HEALTH</small></span><div class="health-numbers"><b id="health-value">100</b><small>/ 100</small><div class="health-meter"><i id="health-meter"></i></div></div></div><div class="kill-stat"><span>击倒</span><b id="kill-value">00</b></div></div>
+  <div class="weapon-hud"><div class="weapon-top"><span id="weapon-name">MK.01 / 爆点突击步枪</span><span class="auto-label" id="fire-mode">AUTO</span></div><div class="ammo-row"><svg viewBox="0 0 150 50" class="gun-icon"><path id="weapon-icon" d="m4 20 21-2 5-6h55l4 5h29v5h22v5h-29l-3 5H80l-2 13H64l-2-13H48l-6 10H30l7-16H4Z"/></svg><span><b id="ammo-value">30</b><i>/</i><small id="reserve-value" title="备用弹药无限" aria-label="备用弹药无限">∞</small></span></div><div class="reload-bar" id="reload-bar"></div><div class="weapon-slots" role="group" aria-label="选择武器">
+    <button data-weapon="0" aria-pressed="true"><kbd>1</kbd> 步枪</button><button data-weapon="1" aria-pressed="false"><kbd>2</kbd> 霰弹枪</button><button data-weapon="2" aria-pressed="false"><kbd>3</kbd> 冲锋枪</button>
+    <button data-weapon="3" aria-pressed="false"><kbd>4</kbd> 狙击枪</button><button data-weapon="4" aria-pressed="false"><kbd>5</kbd> 重型手枪</button><button data-weapon="5" aria-pressed="false"><kbd>6</kbd> 左轮</button>
+  </div><div class="weapon-bottom"><span>弹匣 <b id="mag-capacity">30</b> 发 · 备用 ∞</span><span><kbd>R</kbd> 换弹</span></div></div>
+  <div class="status-hud"><span id="status-label">READY TO MAKE IT POP</span><i></i><span id="enemy-count">训练场已就绪</span></div>
+  <div id="pause-menu" class="dialog-backdrop hidden"><section class="dialog pause-dialog"><div class="issue-label">TAKE A BREATHER <span>Ⅱ</span></div><h2 id="pause-title">稍作喘息。</h2><p id="pause-text">战场还在等你。准备好继续了吗？</p><button id="resume-button" class="play-button"><span>继续战斗</span><b>→</b></button><button id="restart-button" class="secondary-button">重新开始</button><button id="pause-fullscreen" class="secondary-button">进入全屏 · F</button></section></div>
+  <div id="guide" class="dialog-backdrop hidden"><section class="dialog guide-dialog"><button class="close-button" id="close-guide" aria-label="关闭指南">×</button><div class="issue-label">FIELD MANUAL <span>01 — 06</span></div><h2>先动起来，再开火。</h2><p>在 3 分钟内清除 3 波突击队员。爆头造成双倍伤害，连续击倒积累分数。击败敌人会恢复少量生命。兵营和军械库的外楼梯可通往二楼，后方回廊连接两翼，并通向工坊屋顶。雷达三角标记表示不同高度的敌人。</p><div class="guide-grid"><div><kbd>W A S D</kbd><span>移动</span></div><div><kbd>鼠标</kbd><span>转向 / 瞄准</span></div><div><kbd>左键</kbd><span>开火 · 自动枪可按住连射</span></div><div><kbd>右键</kbd><span>瞄准 / 狙击镜</span></div><div><kbd>R</kbd><span>换弹</span></div><div><kbd>SPACE</kbd><span>跳跃 · 按住攀上箱沿</span></div><div><kbd>E / W S</kbd><span>抓住梯子 / 上下攀爬</span></div><div><kbd>SHIFT</kbd><span>冲刺</span></div><div><kbd>1 — 6</kbd><span>切换武器</span></div><div><kbd>ESC</kbd><span>暂停 / 释放鼠标</span></div><div><kbd>TAB</kbd><span>按住查看联机战绩</span></div><div><kbd>F</kbd><span>游戏全屏 / 退出全屏</span></div><div><kbd>M</kbd><span>切换声音</span></div></div><button id="guide-play" class="play-button"><span>明白，进入战场</span><b>→</b></button></section></div>
+  <div id="lan-dialog" class="dialog-backdrop hidden"><section class="dialog lan-dialog" role="dialog" aria-modal="true" aria-labelledby="lan-title">
+    <button class="close-button" id="close-lan" aria-label="关闭联机房间">×</button>
+    <div class="issue-label">LOCAL COMBAT CLUB <span>02 — 08</span></div>
+    <h2 id="lan-title">同一战场，一起开火。</h2>
+    <p>红蓝分队 · 每局 5 分钟 · 全队先得 20 次击倒获胜。<br>自动平衡分队 · 无友军伤害 · 阵亡 3 秒后重生。</p>
+    <form id="lan-form"><label for="lan-name">你的呼号</label><input id="lan-name" name="name" maxlength="16" placeholder="Pop 玩家" autocomplete="nickname"><button id="lan-join" type="submit" class="play-button"><span>加入房间</span><b>→</b></button></form>
+    <p id="lan-status" role="status">正在查找房间…</p>
+    <div class="lan-share"><b>邀请同一 Wi-Fi / 局域网的朋友</b><span>在朋友的浏览器打开以下房主地址，点击「局域网对战」。</span><div id="lan-addresses"></div></div>
+  </section></div>
+  <details id="lan-scoreboard" class="hidden"><summary>战绩 <kbd>Tab</kbd> <span id="lan-ping"></span></summary><div id="lan-team"></div><table><thead><tr><th>玩家</th><th>击倒</th><th>阵亡</th></tr></thead><tbody id="lan-scores"></tbody></table></details>
+  <div id="death-vignette" aria-hidden="true"></div>
+  <section id="death-card" class="hidden" role="status" aria-live="polite" aria-atomic="true">
+    <span class="death-eyebrow">ELIMINATED</span><b id="death-killer">你被击倒了</b><span id="death-weapon"></span>
+    <strong id="death-countdown">3 秒后复活</strong><span id="death-detail"></span>
+    <button id="death-restart" class="hidden">再来一局 →</button><div class="death-progress-track"><i id="death-progress"></i></div>
+  </section>
+  <div id="lan-center" class="hidden" role="status"></div>
+  <div id="loading"><span class="loading-star">✦</span><b>LOADING POP STRIKE…</b><span>正在绘制战场</span></div>
+  <div id="mobile-controls"><div id="joystick"><i></i></div><div class="mobile-buttons"><button id="mobile-interact" class="hidden">爬梯</button><button id="mobile-jump">跳跃</button><button id="mobile-aim">瞄准</button><button id="mobile-fire">开火</button><button id="mobile-weapon">换枪</button><button id="mobile-reload">换弹</button></div></div>
+</main>
+<footer class="bottombar"><span class="footer-tag">MAKE IT POP.</span><div class="controls-strip"><span><kbd>W A S D</kbd> 移动</span><span><kbd>鼠标</kbd> 瞄准 / 射击</span><span><kbd>R</kbd> 换弹</span><span><kbd>1 — 6 / 滚轮</kbd> 换枪</span><span><kbd>SHIFT</kbd> 冲刺</span><span><kbd>ESC</kbd> 暂停</span><span><kbd>F</kbd> 全屏</span></div><span class="footer-right">VOL. 01 <b>✦</b></span></footer>
+<script type="module" src="./game.js"></script>
+</body></html>

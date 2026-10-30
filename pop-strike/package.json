@@ -1,0 +1,12 @@
+{
+  "name": "pop-strike-game",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "check": "node --check game.js && node --check world.js && node --check enemy.js && node --check death-view.js && node --check audio.js && node --check physics.js && node --check upper-yard.js && node --check navigation.js && node --check multiplayer.js && node --check weapons.js && node --check weapon-models.js && node --check room.mjs && node --check websocket.mjs && node --check server.mjs && node --check cargo-yard.js && node --check palette.js",
+    "test": "node --test tests/*.test.mjs"
+  }
+}

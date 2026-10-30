@@ -1,0 +1,8 @@
+# Generated builds, release archives, and local video captures.
+/dist/
+
+# Local tooling and operating-system files.
+node_modules/
+__pycache__/
+*.py[cod]
+.DS_Store
